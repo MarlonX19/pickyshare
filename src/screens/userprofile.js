@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-// import { Container } from './styles';
+import Header from './../components/header'
 
 export default function UserProfile() {
   return (
     <View style={styles.container} >
+        <Header label='User profile' navigation={props.navigation} />
         <Text>UserProfile goes here</Text>
     </View>
   );
@@ -13,9 +14,7 @@ export default function UserProfile() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        flex: 1
 
     }
 })
