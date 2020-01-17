@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+//import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import Header from './../components/header'
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
+import Auth from './../components/auth'
 
 export default function Upload(props) {
   const [avatarSource, setAvatarSource] = useState('')
+  const [imageSelected, setImageSelected] = useState(false)
+  const [loggedin, setLoggedin] = useState(false)
+
 
   const launch = () => {
     ImagePicker.launchImageLibrary({
@@ -30,19 +26,56 @@ export default function Upload(props) {
   }
 
 
+  const launchLibrary = () => {
+    ImagePicker.openPicker({
+      width: 450,
+      height: 350,
+      cropping: true
+    }).then(image => {
+      setAvatarSource(image.path)
+    });
+  }
+
+
+  const launchCamera = () => {
+    ImagePicker.openCamera({
+      width: 450,
+      height: 350,
+      cropping: true,
+    }).then(image => {
+      setAvatarSource(image.path)
+    });
+  }
+
+
+
 
 
   return (
     <View style={styles.container} >
       <Header label='Upload' navigation={props.navigation} />
-      <View style={styles.main}>
-        <TouchableOpacity
-          onPress={() => launch()}
-        >
-          <Text>Upload goes here</Text>
-        </TouchableOpacity>
-        <Image source={{ uri: avatarSource }} style={styles.uploadAvatar} />
-      </View>
+      {loggedin ? true(
+        <View style={styles.main}>
+          <View style={styles.options}>
+            <TouchableOpacity
+              onPress={() => launchCamera()}
+              style={{ marginHorizontal: 10 }}
+            >
+              <Text>Take</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => launchLibrary()}
+              style={{ marginHorizontal: 10 }}
+            >
+              <Text>Choose</Text>
+            </TouchableOpacity>
+          </View>
+          <Image source={{ uri: avatarSource }} style={styles.uploadAvatar} />
+        </View>
+      ) : (
+        <Auth />
+        )}
+
     </View>
   );
 }
@@ -59,8 +92,19 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
+  options: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  },
+
   uploadAvatar: {
     width: '100%',
     height: 250
+  },
+
+  notLogged: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })

@@ -129,7 +129,7 @@ export default function PhotoList(props) {
 
         f.auth().onAuthStateChanged(function (user) {
             if (user) {
-                setUserId(userId.uid)
+                setUserId(user.uid)
             }
         })
 

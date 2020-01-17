@@ -8,7 +8,7 @@ export default function Feed(props) {
   return (
     <View style={styles.container} >
       <Header label='Feed' navigation={props.navigation} />
-      <PhotoList />
+      <PhotoList navigation={props.navigation} isUser={false} />
     </View>
   );
 }
