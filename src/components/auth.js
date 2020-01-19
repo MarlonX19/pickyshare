@@ -28,7 +28,6 @@ export default function Auth() {
         if (email != '' && pass != '') {
             try {
                 let user = await auth.signInWithEmailAndPassword(email, pass)
-                console.log(user)
             } catch (err) {
                 alert(err)
             }
@@ -60,7 +59,7 @@ export default function Auth() {
         <View style={styles.container}>
             {authStep == 0 ? (
                 <View style={styles.options}>
-                    <Text>You're not logged in</Text>
+                    <Text style={{ fontSize: 18, color: 'grey'}}>You're not logged in</Text>
                     <View>
                         <Image style={{ width: 350, height: 300 }} source={require('../assets/create.png')} />
                     </View>

@@ -126,7 +126,8 @@ export default function PhotoList(props) {
 
     useEffect(() => {
         const { isUser, userId } = props;
-
+        console.log('aqui' +userId)
+        console.log(isUser)
         f.auth().onAuthStateChanged(function (user) {
             if (user) {
                 setUserId(user.uid)
