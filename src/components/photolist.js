@@ -124,6 +124,44 @@ export default function PhotoList(props) {
 
     }
 
+    const deletePhoto = (userId, imageId) => {
+        var storageRef = storage.ref()
+        var desertRef = storageRef.child('user/' + userId + '/img/' + imageId + '.')
+        desertRef.delete().then(function () {
+            let removePhotoFromUsers = database.ref('users/' + userId + '/photos/' + imageId)
+            removePhotoFromUsers.remove()
+
+            let removePhotoFromPhotos = database.ref('photos/' + imageId)
+            removePhotoFromPhotos.remove()
+
+            let removePhotoFromComments = database.ref('comments/' + imageId)
+            removePhotoFromComments.remove()
+
+            Alert.alert('Photo Deleted')
+            loadNew()
+
+        }).catch(function (error) {
+            alert(error.message)
+        });
+    }
+
+
+
+    const handleDelete = (userId, imageId) => {
+        Alert.alert(
+            'Delete photo',
+            'Are you sure?',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed')
+              },
+              {text: 'Yes', onPress: () => deletePhoto(userId, imageId)},
+            ],
+            {cancelable: false},
+          );
+    }
+
 
     useEffect(() => {
         let { isUser, userId } = props;
@@ -191,7 +229,7 @@ export default function PhotoList(props) {
                                                 <Text style={{ color: '#98A1A2', fontSize: 10 }}>{item.posted}</Text>
                                             </View>
                                         </View>
-                                        {currentUser == item.authorId ? (
+                                        {userId == item.authorId ? (
                                             <TouchableOpacity
                                                 style={{ marginHorizontal: 10 }}
                                                 onPress={() => handleDelete(item.authorId, item.id)}
