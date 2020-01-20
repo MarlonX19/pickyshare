@@ -8,7 +8,7 @@ import Header from './../components/header'
 import Auth from './../components/auth'
 
 export default function Upload(props) {
-  const [avatarSource, setAvatarSource] = useState('file:///storage/emulated/0/Pictures/7f8737ba-c4b9-4c83-b821-38eb36bbaf4f.jpg')
+  const [avatarSource, setAvatarSource] = useState('')
   const [imageSelected, setImageSelected] = useState(false)
   const [loggedin, setLoggedin] = useState(false)
   const [uri, setUri] = useState('')
@@ -149,6 +149,11 @@ export default function Upload(props) {
   }, [])
 
 
+  const handleCancelUpload = () => {
+    setAvatarSource('');
+    setImageSelected(false)
+  }
+
 
   return (
     <View style={styles.container} >
@@ -173,21 +178,33 @@ export default function Upload(props) {
               >
                 <Text style={{ textAlign: 'center', color: 'white' }}>Upload & publish it</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleCancelUpload()}
+                style={{ alignSelf: 'center', width: 170, marginHorizontal: 'auto', borderRadius: 3, paddingVertical: 10, paddingHorizontal: 10, }}
+              >
+                <Text style={{ textAlign: 'center', color: 'red', fontWeight: 'bold' }}>Cancel</Text>
+              </TouchableOpacity>
             </View>
           ) : (
               <View style={styles.options}>
-                <TouchableOpacity
-                  onPress={() => launchCamera()}
-                  style={{ marginHorizontal: 10 }}
-                >
-                  <Text>Take</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => launchLibrary()}
-                  style={{ marginHorizontal: 10 }}
-                >
-                  <Text>Choose</Text>
-                </TouchableOpacity>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{ color: 'grey', fontSize: 20, marginBottom: 30 }}>Share your best photo</Text>
+                  <View style={{ flexDirection: 'row'}}>
+                  <TouchableOpacity
+                    onPress={() => launchCamera()}
+                    style={{ marginHorizontal: 10, backgroundColor: 'green', padding: 10, borderRadius: 3 }}
+                  >
+                    <Text style={{ fontSize: 18, color: '#fff'}}>Take photo</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => launchLibrary()}
+                    style={{ marginHorizontal: 10, backgroundColor: 'blue', padding: 10, borderRadius: 3  }}
+                  >
+                    <Text  style={{ fontSize: 18, color: '#fff'}}>Choose photo</Text>
+                  </TouchableOpacity>
+                  </View>
+                  <Image style={{ width: '100%', height: 350 }} source={require('../assets/photo.png')} />
+                </View>
               </View>
             )}
         </View>
@@ -201,8 +218,8 @@ export default function Upload(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-
+    flex: 1,
+    backgroundColor: '#fff'
   },
 
   main: {
@@ -212,12 +229,14 @@ const styles = StyleSheet.create({
   },
 
   options: {
+    flex: 1,
+    backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
 
   uploadAvatar: {
-    marginTop: 10,
+    marginVertical: 10,
     width: 400,
     height: 275
   },
