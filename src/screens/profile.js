@@ -150,7 +150,7 @@ export default function Profile(props) {
 
     database.ref('users').child(userId).child('bio').set(bio)
 
-    setEditingProfile(true)
+    setEditingProfile(false)
 
     uploadImage(uri)
 }
