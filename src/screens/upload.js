@@ -8,7 +8,7 @@ import Header from './../components/header'
 import Auth from './../components/auth'
 
 export default function Upload(props) {
-  const [avatarSource, setAvatarSource] = useState('')
+  const [avatarSource, setAvatarSource] = useState('file:///storage/emulated/0/Pictures/7f8737ba-c4b9-4c83-b821-38eb36bbaf4f.jpg')
   const [imageSelected, setImageSelected] = useState(false)
   const [loggedin, setLoggedin] = useState(false)
   const [uri, setUri] = useState('')
@@ -40,6 +40,7 @@ export default function Upload(props) {
       height: 350,
       cropping: true
     }).then(image => {
+      console.log(image)
       setAvatarSource(image.path)
       setImageId(uniqueId())
       setImageSelected(true)
@@ -73,8 +74,8 @@ export default function Upload(props) {
 
 
   const uploadImage = async (uri) => {
+    console.log(uri)
     var currentUserId = f.auth().currentUser.uid
-    console.log(currentUserId)
 
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(uri)[1]
@@ -154,36 +155,41 @@ export default function Upload(props) {
       <Header label='Upload' navigation={props.navigation} />
       {loggedin == true ? (
         <View style={styles.main}>
-          <View style={styles.options}>
-            <TouchableOpacity
-              onPress={() => launchCamera()}
-              style={{ marginHorizontal: 10 }}
-            >
-              <Text>Take</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => launchLibrary()}
-              style={{ marginHorizontal: 10 }}
-            >
-              <Text>Choose</Text>
-            </TouchableOpacity>
-          </View>
-          <TextInput
-            editable
-            placeholder={'Say something amazing about this photo'}
-            maxLength={150}
-            multiline={true}
-            numberOfLines={4}
-            onChangeText={text => setCaption(text)}
-            style={{ marginVertical: 10, height: 100, padding: 5, borderColor: '#ddd', borderWidth: 0.3, borderRadius: 3, backgroundColor: '#fff', color: 'black' }}
-          />
-          <Image source={{ uri: avatarSource }} style={styles.uploadAvatar} />
-          <TouchableOpacity
-            onPress={() => uploadPublish()}
-            style={{ alignSelf: 'center', width: 170, marginHorizontal: 'auto', backgroundColor: 'purple', borderRadius: 3, paddingVertical: 10, paddingHorizontal: 10, }}
-          >
-            <Text style={{ textAlign: 'center', color: 'white' }}>Upload & publish it</Text>
-          </TouchableOpacity>
+          {imageSelected == true ? (
+            <View>
+              <TextInput
+                editable
+                placeholder={'Say something amazing about this photo'}
+                maxLength={150}
+                multiline={true}
+                numberOfLines={4}
+                onChangeText={text => setCaption(text)}
+                style={{ marginVertical: 10, height: 100, padding: 5, borderColor: '#ddd', borderWidth: 0.3, borderRadius: 3, backgroundColor: '#fff', color: 'black' }}
+              />
+              <Image source={{ uri: avatarSource }} style={styles.uploadAvatar} />
+              <TouchableOpacity
+                onPress={() => uploadPublish()}
+                style={{ alignSelf: 'center', width: 170, marginHorizontal: 'auto', backgroundColor: 'purple', borderRadius: 3, paddingVertical: 10, paddingHorizontal: 10, }}
+              >
+                <Text style={{ textAlign: 'center', color: 'white' }}>Upload & publish it</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+              <View style={styles.options}>
+                <TouchableOpacity
+                  onPress={() => launchCamera()}
+                  style={{ marginHorizontal: 10 }}
+                >
+                  <Text>Take</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => launchLibrary()}
+                  style={{ marginHorizontal: 10 }}
+                >
+                  <Text>Choose</Text>
+                </TouchableOpacity>
+              </View>
+            )}
         </View>
       ) : (
           <Auth />
@@ -211,8 +217,9 @@ const styles = StyleSheet.create({
   },
 
   uploadAvatar: {
-    width: '100%',
-    height: 250
+    marginTop: 10,
+    width: 400,
+    height: 275
   },
 
   notLogged: {

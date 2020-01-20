@@ -126,12 +126,12 @@ export default function Profile(props) {
   }, [])
 
 
-  const logoutUser = () => {
+  function logoutUser() {
     f.auth().signOut()
     setAvatar('')
     setLoggedin(false)
     setUserId('')
-    Alert.alert('Logged out')
+    Alert.alert('Logged out' + userId)
   }
 
   const editProfile = () => {

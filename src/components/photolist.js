@@ -10,6 +10,7 @@ export default function PhotoList(props) {
     const [userId, setUserId] = useState('')
     const [currentUser, setCurrentUser] = useState('')
     const [empty, setEmpty] = useState(false)
+    const [isUser, setIsUser] = useState(false)
 
 
     const pluralCheck = (s) => {
@@ -88,8 +89,7 @@ export default function PhotoList(props) {
 
 
     const loadFeed = (userId = '') => {
-        setRefresh(true)
-        setPhoto_feed([])
+        setRefresh(false)
         
         var loadRef = database.ref('photos')
 
@@ -102,8 +102,8 @@ export default function PhotoList(props) {
                 const exists = (snapshot.val() !== null);
                 if (exists) {
                     let data = snapshot.val();
-                    
-                    var feed = photo_feed;
+
+                    var feed = [];
                     setEmpty(false)
                     for (var photo in data) {
                         addToFlatlist(feed, data, photo)
@@ -115,7 +115,8 @@ export default function PhotoList(props) {
     }
 
     const loadNew = () => {
-        if (userId != '') {
+
+        if (userId != '' && isUser == true) {
            loadFeed(userId)
         } else {
             loadFeed()
@@ -125,11 +126,12 @@ export default function PhotoList(props) {
 
 
     useEffect(() => {
-        const { isUser, userId } = props;
-        console.log('aqui' +userId)
-        console.log(isUser)
+        let { isUser, userId } = props;
+        console.log('aqui ' + userId)
+        console.log('eh user ' + isUser)
         f.auth().onAuthStateChanged(function (user) {
             if (user) {
+                console.log('caiu aqui')
                 setUserId(user.uid)
             }
         })
@@ -137,7 +139,9 @@ export default function PhotoList(props) {
         if (isUser == true) {
             loadFeed(userId)
             setUserId(userId)
+            setIsUser(true)
         } else {
+            console.log('carreda tudo')
             loadFeed()
         }
 
