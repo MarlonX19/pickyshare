@@ -101,7 +101,7 @@ export default function Comments(props) {
 
   const fetchComments = (photoId) => {
 
-    database.ref('comments').child(photoId).orderByChild('posted').once('value').then(function (snapshot) {
+    database.ref('comments').child(photoId).orderByChild('posted').on('value', function (snapshot) {
       const exists = (snapshot.val() != null);
 
       if (exists) {
@@ -117,7 +117,7 @@ export default function Comments(props) {
         setComment_list([])
         setLoading(false)
       }
-    }).catch(error => console.log(error))
+    })
   }
 
 
@@ -172,6 +172,10 @@ export default function Comments(props) {
 
   }
 
+  const updateComments = () => {
+    reloadCommentList()
+  }
+
 
   useEffect(() => {
     f.auth().onAuthStateChanged(function (user) {
@@ -203,6 +207,7 @@ export default function Comments(props) {
       ) : (
           <FlatList
             refreshing={refresh}
+            onRefresh={updateComments}
             data={comment_list}
             keyExtractor={(item, index) => index.toString()}
             style={{ flex: 1, backgroundColor: '#eee' }}
