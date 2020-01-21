@@ -115,9 +115,9 @@ export default function PhotoList(props) {
     }
 
     const loadNew = () => {
-
+        //Loads info based on the props.UserId, working for both visiting and self profile check
         if (userId != '' && isUser == true) {
-           loadFeed(userId)
+           loadFeed(props.userId)
         } else {
             loadFeed()
         }
@@ -165,21 +165,18 @@ export default function PhotoList(props) {
 
     useEffect(() => {
         let { isUser, userId } = props;
-        console.log('aqui ' + userId)
-        console.log('eh user ' + isUser)
         f.auth().onAuthStateChanged(function (user) {
             if (user) {
-                console.log('caiu aqui')
                 setUserId(user.uid)
             }
         })
 
         if (isUser == true) {
-            loadFeed(userId)
             setUserId(userId)
             setIsUser(true)
+            loadFeed(props.userId)
         } else {
-            console.log('carreda tudo')
+            console.log('loads all info')
             loadFeed()
         }
 
@@ -209,7 +206,7 @@ export default function PhotoList(props) {
                                     <View style={styles.cardHeader}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <TouchableOpacity
-                                                onPress={() => props.navigation.navigate('User', { userId: item.authorId, visitorId: visitorId })}
+                                                onPress={() => props.navigation.navigate('User', { userId: item.authorId })}
                                             >
                                                 <Image
                                                     source={{ uri: item.userAvatar }}
@@ -222,7 +219,7 @@ export default function PhotoList(props) {
                                             </TouchableOpacity>
                                             <View>
                                                 <TouchableOpacity
-                                                    onPress={() => props.navigation.navigate('User', { userId: item.authorId, visitorId: visitorId })}
+                                                    onPress={() => props.navigation.navigate('User', { userId: item.authorId })}
                                                 >
                                                     <Text style={{ color: '#424C4C', fontWeight: 'bold' }}>{item.author}</Text>
                                                 </TouchableOpacity>
