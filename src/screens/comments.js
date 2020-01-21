@@ -100,6 +100,7 @@ export default function Comments(props) {
 
 
   const fetchComments = (photoId) => {
+    setLoading(true)
 
     database.ref('comments').child(photoId).orderByChild('posted').on('value', function (snapshot) {
       const exists = (snapshot.val() != null);

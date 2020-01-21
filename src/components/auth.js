@@ -29,8 +29,8 @@ export default function Auth() {
         if (email != '' && pass != '') {
             try {
                 let user = await auth.signInWithEmailAndPassword(email, pass)
-            } catch (err) {
-                alert(err)
+            } catch (error) {
+                Alert.alert(error.message)
             }
         } else {
             Alert.alert('Email or password are empty')
@@ -46,10 +46,10 @@ export default function Auth() {
                     .then((userObj) => createUserObj(userObj.user, email))
                     .catch((err) => alert(err))
             } catch (err) {
-                alert(err)
+                Alert.alert(err)
             }
         } else {
-            alert('Email or password are empty')
+            Alert.alert('Email or password are empty')
         }
 
     }
@@ -191,15 +191,17 @@ const styles = StyleSheet.create({
     },
 
     emailOption: {
-        fontSize: 18,
+        fontSize: 24,
+        margin: 30,
         fontWeight: 'bold',
         marginBottom: 20,
-        color: '#ccc',
+        color: '#535A55',
         alignSelf: 'center'
     },
 
     label: {
-        fontSize: 16,
+        marginLeft: 2,
+        fontSize: 13,
         fontWeight: 'bold',
         color: '#ccc'
     },
