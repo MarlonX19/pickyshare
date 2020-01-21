@@ -129,9 +129,9 @@ export default function Profile(props) {
   function logoutUser() {
     f.auth().signOut()
     setAvatar('')
-    setLoggedin(false)
     setUserId('')
-    Alert.alert('Logged out' + userId)
+    setLoggedin(false)
+    Alert.alert('Logged out')
   }
 
   const editProfile = () => {
@@ -139,7 +139,6 @@ export default function Profile(props) {
   }
 
   const saveProfile = () => {
-
     if (name != '') {
         database.ref('users').child(userId).child('name').set(name)
     }

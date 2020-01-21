@@ -90,6 +90,7 @@ export default function PhotoList(props) {
 
     const loadFeed = (userId = '') => {
         setRefresh(false)
+        setLoading(true)
         
         var loadRef = database.ref('photos')
 
@@ -99,8 +100,10 @@ export default function PhotoList(props) {
 
         loadRef.orderByChild('posted').once('value')
             .then(function (snapshot) {
+                
                 const exists = (snapshot.val() !== null);
                 if (exists) {
+                    
                     let data = snapshot.val();
 
                     var feed = [];
@@ -111,7 +114,7 @@ export default function PhotoList(props) {
                 } else {
                     setEmpty(true)
                 }
-            }).catch(err => console.log(err))
+            }).catch(err => alert(err))
     }
 
     const loadNew = () => {
