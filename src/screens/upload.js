@@ -75,13 +75,13 @@ export default function Upload(props) {
   const uploadImage = async (uri) => {
     var currentUserId = f.auth().currentUser.uid
 
-    var re = /(?:\.([^.]+))?$/;
-    var ext = re.exec(uri)[1]
-    setCurrentFileType(ext)
+    //var re = /(?:\.([^.]+))?$/;
+    //var ext = re.exec(uri)[1]
+    //setCurrentFileType(ext)
 
     const response = await fetch(uri);
     const blob = await response.blob()
-    var filePath = imageId + '.' + currentFileType
+    var filePath = imageId // + '.' + currentFileType
 
     var uploadTask = storage.ref('user/' + currentUserId + '/img').child(filePath).put(blob)
 
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
 
   uploadAvatar: {
     marginVertical: 10,
-    width: 400,
+    width: '100%',
     height: 275
   },
 

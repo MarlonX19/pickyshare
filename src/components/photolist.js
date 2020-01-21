@@ -129,7 +129,7 @@ export default function PhotoList(props) {
 
     const deletePhoto = (userId, imageId) => {
         var storageRef = storage.ref()
-        var desertRef = storageRef.child('user/' + userId + '/img/' + imageId + '.')
+        var desertRef = storageRef.child('user/' + userId + '/img/' + imageId)
         desertRef.delete().then(function () {
             let removePhotoFromUsers = database.ref('users/' + userId + '/photos/' + imageId)
             removePhotoFromUsers.remove()

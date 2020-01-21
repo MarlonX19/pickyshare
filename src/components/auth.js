@@ -9,6 +9,7 @@ export default function Auth() {
     const [authStep, setAuthStep] = useState(0)
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
+    const [checking, setChecking] = useState(false)
 
 
 
@@ -26,13 +27,17 @@ export default function Auth() {
 
 
     const login = async () => {
+        setChecking(true)
         if (email != '' && pass != '') {
             try {
                 let user = await auth.signInWithEmailAndPassword(email, pass)
+                setChecking(false)
             } catch (error) {
+                setChecking(false)
                 Alert.alert(error.message)
             }
         } else {
+            setChecking(false)
             Alert.alert('Email or password are empty')
         }
 
@@ -40,15 +45,19 @@ export default function Auth() {
 
 
     const signUp = async () => {
+        setChecking(true)
         if (email != '' && pass != '') {
             try {
                 let user = await auth.createUserWithEmailAndPassword(email, pass)
                     .then((userObj) => createUserObj(userObj.user, email))
                     .catch((err) => alert(err))
+                    setChecking(false)
             } catch (err) {
+                setChecking(false)
                 Alert.alert(err)
             }
         } else {
+            setChecking(false)
             Alert.alert('Email or password are empty')
         }
 
@@ -101,7 +110,8 @@ export default function Auth() {
                                     style={styles.Input}
                                 />
                                 <TouchableOpacity
-                                    style={styles.loginBtn}
+                                    disabled={checking}
+                                    style={[styles.loginBtn, { backgroundColor: checking == true ? '#ddd' : 'green'}]}
                                     onPress={() => login()}
                                 >
                                     <Text style={{ color: '#fff', alignSelf: 'center' }}>Login</Text>
@@ -115,7 +125,7 @@ export default function Auth() {
                                 <Image style={{ width: 200, height: 200, alignSelf: 'center' }} source={require('../assets/join.png')} />
                             </View>
                         ) : (
-                                <View style={{ flex: 1, marginHorizontal: 20, marginVertical: 20, alignItems: 'center'  }}>
+                                <View style={{ flex: 1, marginHorizontal: 20, marginVertical: 20, alignItems: 'center' }}>
                                     <View>
                                         <Text style={styles.emailOption}>Sign up</Text>
                                         <Text style={styles.label}>Email</Text>
@@ -139,7 +149,8 @@ export default function Auth() {
                                             style={styles.Input}
                                         />
                                         <TouchableOpacity
-                                            style={styles.signupBtn}
+                                            disabled={checking}
+                                            style={[styles.signupBtn, { backgroundColor: checking == true ? '#ddd' : 'blue'}]}
                                             onPress={() => signUp()}
                                         >
                                             <Text style={{ color: '#fff', alignSelf: 'center' }}>Sign up</Text>
