@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator } from 'react-native';
-//import ImagePicker from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import { f, auth, storage, database, firebaseConfig } from '../config/config';
+import { f, storage, database } from '../config/config';
 
 import Header from './../components/header'
 import Auth from './../components/auth'
@@ -31,7 +30,6 @@ export default function Upload(props) {
       s4() + '-' + s4() + '-' + s4() + '-' + s4();
 
   }
-
 
 
   const launchLibrary = () => {
@@ -66,7 +64,7 @@ export default function Upload(props) {
         uploadImage(avatarSource)
         setUploading(true)
       } else {
-        alert('Please enter a caption...')
+        Alert.alert('Please enter a caption...')
       }
     } else {
       console.log('app already uploading a pic')
@@ -157,9 +155,9 @@ export default function Upload(props) {
 
   return (
     <View style={styles.container} >
-      <Header label='Upload' navigation={props.navigation} />
       {loggedin == true ? (
         <View style={styles.main}>
+          <Header label='Upload' navigation={props.navigation} />
           {imageSelected == true ? (
             <View>
               <TextInput
@@ -169,25 +167,25 @@ export default function Upload(props) {
                 multiline={true}
                 numberOfLines={4}
                 onChangeText={text => setCaption(text)}
-                style={{ marginVertical: 10, height: 100, padding: 5, borderColor: '#ddd', borderWidth: 0.3, borderRadius: 3, backgroundColor: '#fff', color: 'black' }}
+                style={styles.photoTitle}
               />
               <Image source={{ uri: avatarSource }} style={styles.uploadAvatar} />
               {uploading == true ? (
-                <View style={{ alignItems: 'center'}}>
-                  <Text style={{ alignSelf: 'center', fontSize: 15, color: 'green'}}>{progress}%</Text>
+                <View style={{ alignItems: 'center' }}>
+                  <Text style={{ alignSelf: 'center', fontSize: 15, color: 'green' }}>{progress}%</Text>
                   <ActivityIndicator size='small' color='green' />
                 </View>
               ) : (
                   <TouchableOpacity
                     onPress={() => uploadPublish()}
-                    style={{ alignSelf: 'center', width: 170, marginHorizontal: 'auto', backgroundColor: 'purple', borderRadius: 3, paddingVertical: 10, paddingHorizontal: 10, }}
+                    style={styles.uploadBtn}
                   >
                     <Text style={{ textAlign: 'center', color: 'white' }}>Upload & publish it</Text>
                   </TouchableOpacity>
                 )}
               <TouchableOpacity
                 onPress={() => handleCancelUpload()}
-                style={{ alignSelf: 'center', width: 170, marginHorizontal: 'auto', borderRadius: 3, paddingVertical: 10, paddingHorizontal: 10, }}
+                style={styles.cancelUpload}
               >
                 <Text style={{ textAlign: 'center', color: 'red', fontWeight: 'bold' }}>Cancel</Text>
               </TouchableOpacity>
@@ -199,13 +197,13 @@ export default function Upload(props) {
                   <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                       onPress={() => launchCamera()}
-                      style={{ marginHorizontal: 10, backgroundColor: 'green', padding: 10, borderRadius: 3 }}
+                      style={styles.launchCamera}
                     >
                       <Text style={{ fontSize: 18, color: '#fff' }}>Take photo</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => launchLibrary()}
-                      style={{ marginHorizontal: 10, backgroundColor: 'blue', padding: 10, borderRadius: 3 }}
+                      style={styles.launchLibrary}
                     >
                       <Text style={{ fontSize: 18, color: '#fff' }}>Choose photo</Text>
                     </TouchableOpacity>
@@ -231,8 +229,6 @@ const styles = StyleSheet.create({
 
   main: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
 
   options: {
@@ -252,5 +248,49 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  photoTitle: {
+    marginVertical: 10,
+    height: 100,
+    padding: 5,
+    borderColor: '#ddd',
+    borderWidth: 0.3,
+    borderRadius: 3,
+    backgroundColor: '#fff',
+    color: 'black'
+  },
+
+  uploadBtn: {
+    alignSelf: 'center',
+    width: 170,
+    marginHorizontal: 'auto',
+    backgroundColor: 'purple',
+    borderRadius: 3,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+
+  launchCamera: {
+    marginHorizontal: 10,
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 3
+  },
+
+  launchLibrary: {
+    marginHorizontal: 10,
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 3
+  },
+
+  cancelUpload: {
+    alignSelf: 'center',
+    width: 170,
+    marginHorizontal: 'auto',
+    borderRadius: 3,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   }
 })

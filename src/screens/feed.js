@@ -7,7 +7,7 @@ import PhotoList from '../components/photolist'
 export default function Feed(props) {
   return (
     <View style={styles.container} >
-      <Header label='Feed' navigation={props.navigation} />
+      <Header isFeed={true} label='𝑷𝒊𝒄𝒌𝒚𝒔𝒉𝒂𝒓𝒆' navigation={props.navigation} />
       <PhotoList navigation={props.navigation} isUser={false} />
     </View>
   );

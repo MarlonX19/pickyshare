@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput, Alert, Dimensions } from 'react-native';
 import { f, auth, storage, database } from '../config/config'
+import Divider from 'react-native-divider';
 
 // import { Container } from './styles';
 
@@ -59,7 +60,6 @@ export default function Auth() {
         <View style={styles.container}>
             {authStep == 0 ? (
                 <View style={styles.options}>
-                    <Text style={{ fontSize: 18, color: 'grey'}}>You're not logged in</Text>
                     <View>
                         <Image style={{ width: 350, height: 300 }} source={require('../assets/create.png')} />
                     </View>
@@ -68,7 +68,7 @@ export default function Auth() {
                     >
                         <Text style={styles.loginText}>Login</Text>
                     </TouchableOpacity>
-                    <Text style={{ color: 'grey' }}>---- or ----</Text>
+                    <Divider color='grey' orientation='center'>or</Divider>
                     <TouchableOpacity
                         onPress={() => setAuthStep(2)}
                     >
@@ -76,11 +76,11 @@ export default function Auth() {
                     </TouchableOpacity>
                 </View>
             ) : (
-                    <View style={{ marginHorizontal: 20, alignItems: 'center' }}>
+                    <View style={{ flex: 1, marginHorizontal: 20, marginVertical: 20, alignItems: 'center' }}>
                         {authStep == 1 ? (
                             <View>
-                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 20, color: '#ccc', alignSelf: 'center' }}>Login</Text>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#ccc' }}>Email</Text>
+                                <Text style={styles.emailOption}>Login</Text>
+                                <Text style={styles.label}>Email</Text>
                                 <TextInput
                                     editable
                                     keyboardType='email-address'
@@ -88,9 +88,9 @@ export default function Auth() {
                                     autoCapitalize='none'
                                     onChangeText={text => setEmail(text)}
                                     value={email}
-                                    style={{ width: 250, marginVertical: 10, padding: 5, borderBottomWidth: 0.3, borderColor: 'grey', borderRadius: 3 }}
+                                    style={styles.Input}
                                 />
-                                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#ccc' }}>Password</Text>
+                                <Text style={styles.label}>Password</Text>
                                 <TextInput
                                     editable
                                     secureTextEntry
@@ -98,16 +98,16 @@ export default function Auth() {
                                     autoCapitalize='none'
                                     onChangeText={text => setPass(text)}
                                     value={pass}
-                                    style={{ width: 250, marginVertical: 10, padding: 5, borderBottomWidth: 0.3, borderColor: 'grey', borderRadius: 3 }}
+                                    style={styles.Input}
                                 />
                                 <TouchableOpacity
-                                    style={{ backgroundColor: 'green', paddingVertical: 10, marginVertical: 2, paddingHorizontal: 20, borderRadius: 3 }}
+                                    style={styles.loginBtn}
                                     onPress={() => login()}
                                 >
                                     <Text style={{ color: '#fff', alignSelf: 'center' }}>Login</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{ borderWidth: 0.4, paddingVertical: 5, marginVertical: 2, marginBottom: 10, borderColor: 'green', borderRadius: 3 }}
+                                    style={styles.cancelLogin}
                                     onPress={() => setAuthStep(0)}
                                 >
                                     <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'green' }}>Cancel</Text>
@@ -115,10 +115,10 @@ export default function Auth() {
                                 <Image style={{ width: 200, height: 200, alignSelf: 'center' }} source={require('../assets/join.png')} />
                             </View>
                         ) : (
-                                <View style={{ marginHorizontal: 20, alignItems: 'center' }}>
+                                <View style={{ flex: 1, marginHorizontal: 20, marginVertical: 20, alignItems: 'center'  }}>
                                     <View>
-                                        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 20, color: '#ccc', alignSelf: 'center' }}>Sign up</Text>
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#ccc' }}>Email</Text>
+                                        <Text style={styles.emailOption}>Sign up</Text>
+                                        <Text style={styles.label}>Email</Text>
                                         <TextInput
                                             editable
                                             keyboardType='email-address'
@@ -128,7 +128,7 @@ export default function Auth() {
                                             value={email}
                                             style={{ width: 250, marginVertical: 10, padding: 5, borderBottomWidth: 0.3, borderColor: 'grey', borderRadius: 3 }}
                                         />
-                                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#ccc' }}>Password</Text>
+                                        <Text style={styles.label}>Password</Text>
                                         <TextInput
                                             editable
                                             secureTextEntry
@@ -136,16 +136,16 @@ export default function Auth() {
                                             autoCapitalize='none'
                                             onChangeText={text => setPass(text)}
                                             value={pass}
-                                            style={{ width: 250, marginVertical: 10, padding: 5, borderBottomWidth: 0.3, borderColor: 'grey', borderRadius: 3 }}
+                                            style={styles.Input}
                                         />
                                         <TouchableOpacity
-                                            style={{ backgroundColor: 'blue', paddingVertical: 10, marginVertical: 2, paddingHorizontal: 20, borderRadius: 3 }}
+                                            style={styles.signupBtn}
                                             onPress={() => signUp()}
                                         >
                                             <Text style={{ color: '#fff', alignSelf: 'center' }}>Sign up</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
-                                            style={{ borderWidth: 0.4, paddingVertical: 5, marginVertical: 2, marginBottom: 10, borderColor: 'green', borderRadius: 3 }}
+                                            style={styles.cancelSignup}
                                             onPress={() => setAuthStep(0)}
                                         >
                                             <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'blue' }}>Cancel</Text>
@@ -164,7 +164,9 @@ export default function Auth() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     options: {
@@ -186,5 +188,63 @@ const styles = StyleSheet.create({
         padding: 10,
         color: 'blue',
         fontWeight: 'bold'
+    },
+
+    emailOption: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#ccc',
+        alignSelf: 'center'
+    },
+
+    label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#ccc'
+    },
+
+    Input: {
+        width: 250,
+        marginVertical: 10,
+        padding: 5,
+        borderBottomWidth: 0.3,
+        borderColor: 'grey',
+        borderRadius: 3
+    },
+
+    loginBtn: {
+        backgroundColor: 'green',
+        paddingVertical: 10,
+        marginVertical: 2,
+        paddingHorizontal: 20,
+        borderRadius: 3
+    },
+
+    cancelLogin: {
+        borderWidth: 0.4,
+        paddingVertical: 5,
+        marginVertical: 2,
+        marginBottom: 10,
+        borderColor: 'green',
+        borderRadius: 3
+    },
+
+    signupBtn: {
+        backgroundColor: 'blue',
+        paddingVertical: 10,
+        marginVertical: 2,
+        paddingHorizontal: 20,
+        borderRadius: 3
+    },
+
+    cancelSignup: {
+        borderWidth: 0.4,
+        paddingVertical: 5,
+        marginVertical: 2,
+        marginBottom: 10,
+        borderColor: 'green',
+        borderRadius: 3
     }
+
 })

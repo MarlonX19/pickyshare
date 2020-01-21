@@ -5,7 +5,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 export default function Header(props) {
     return (
         <View style={styles.container}>
-            {props.label == 'Feed' ? (
+            {props.isFeed == true ? (
                 <>
                     <TouchableOpacity
                         onPress={() => props.navigation.navigate('Upload')}
@@ -19,7 +19,7 @@ export default function Header(props) {
                     </TouchableOpacity>
                 )}
             <Text style={{ fontSize: 18 }}> {props.label} </Text>
-            {props.label == 'Feed' ? (
+            {props.isFeed == true ? (
                 <Image style={{ width: 30, height: 30, marginRight: 10 }} source={require('../assets/send.png')} />
             ) : (
                     <Text style={{ marginHorizontal: 10, fontSize: 18, textAlign: 'right', width: 100 }}>?</Text>
